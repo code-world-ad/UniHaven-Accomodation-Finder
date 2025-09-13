@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Move-in Date,Duration of Stay and Budget</title>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        background: url('/static/images/komron-khasanov-1-interactive-lightmix.jpg') center/cover no-repeat;
+        background-size: cover;
+        width: 100%;
+        height: 100%;
+        color: black;
+        background-repeat: no-repeat;
+        background-position: center;
+        min-height: 100vh;
+        position: relative
+    }
+
+    footer {
+        position: relative;
+        bottom: 10px;
+        width: 50%;
+        color: white; /* Change the color to black */
+        padding: 10px 20px; /* Adjust padding as needed */
+        text-align: center;
+        background-color: rgba(0, 0, 0, 0.5);
+        border-radius: 5px;
+    }
+
+    .container {
+        width: 50%;
+        height: 200%;
+        margin: 20px auto;
+        padding: 20px;
+        text-align: center;
+        background-color: rgba(0, 0, 0, 0.5);
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        opacity: inherit;
+    }
+
+    .title {
+        text-align: left;
+        font-size: 24px;
+        margin-bottom: 20px;
+        color: #fff; /* Set title color to white */
+        font-family: Georgia, 'Times New Roman', Times, serif;
+    }
+
+    .budgets {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .budget {
+        margin: 10px;
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        background-color: #333;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        color: white;
+    }
+
+    .budget:hover {
+        background-color: #555;
+    }
+
+    .budget input[type="radio"] {
+        display: none;
+    }
+
+    .budget input[type="radio"]:checked + label {
+        background-color: black;
+        color: white /* Change to desired highlight color */
+    }
+
+    .budget label {
+        font-size: 16px;
+        margin-top: 10px;
+        cursor: pointer;
+        padding: 5px;
+        border-radius: 5px;
+    }
+
+    .durations {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .duration {
+        margin: 10px;
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        background-color: #333;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        color: white;
+    }
+
+    .duration:hover {
+        background-color: #555;
+    }
+
+    .duration input[type="radio"] {
+        display: none;
+    }
+
+    .duration input[type="radio"]:checked + label {
+        background-color: black;
+        color: white /* Change to desired highlight color */
+    }
+
+    .duration label {
+        font-size: 16px;
+        margin-top: 10px;
+        cursor: pointer;
+        padding: 5px;
+        border-radius: 5px;
+    }
+
+    #submitBtn {
+    padding: 10px 20px;
+    background-color: rgba(0, 0, 0, 0.5); /* Button background color */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    position: bottom;
+    text-align: center;
+    font-size: 20px;
+    }
+
+    #submitBtn:hover {
+    background-color: rgba(0, 0, 0, 0.5); /* Button hover background color */
+    }
+
+    /* Custom styling for Datepicker */
+    .ui-datepicker {
+        background-color: white; /* Set background color for Datepicker */
+        border: 1px solid black; /* Add border */
+        border-radius: 5px;
+        cursor: pointer; /* Add border radius */
+    }
+
+    .ui-datepicker-header {
+        background-color: #333; /* Set background color for Datepicker header */
+        color: white; /* Set text color for Datepicker header */
+        border: none; /* Remove header border */
+    }
+
+    .ui-datepicker-prev, .ui-datepicker-next {
+        color: black;
+        background-color: azure; /* Set text color for previous and next buttons */
+    }
+
+    .ui-datepicker-prev::after, .ui-datepicker-next::before {
+        content: '|'; /* Add a vertical divider */
+        margin: 0 10px; /* Adjust spacing */
+    }
+
+
+    .ui-state-default { 
+        color: black ; /* Set text color for selectable dates */
+    }
+
+    .ui-state-disabled {
+        color: grey ; /* Set text color for disabled dates */
+    }
+
+    /* Styling for the display box */
+    .move-in-date-box {
+        margin-bottom: 20px;
+        color: white;
+    }
+
+    .move-in-date-input {
+        width: 200px;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        color: white;
+        background: rgba(0, 0, 0, 0.5);
+        font-family: Georgia, 'Times New Roman', Times, serif;
+    }
+
+
+
+</style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">Move-in Date</div>
+        <div class="move-in-date-box">
+            <input type="text" id="moveInDate" name="move_in_date" class="move-in-date-input" readonly placeholder="Select Move-in Date">
+        </div>
+        <div class="title">Duration of Stay</div>
+        <div class="durations">
+            <div class="duration">
+                <input type="radio" id="less_than_1_month" name="duration" value="less_than_1_month">
+                <label for="less_than_1_month">Less than 1 month</label>
+            </div>
+            <div class="duration">
+                <input type="radio" id="1_6_months" name="duration" value="1_6_months">
+                <label for="1_6_months">1 to 6 months</label>
+            </div>
+            <div class="duration">
+                <input type="radio" id="more_than_6_months" name="duration" value="more_than_6_months">
+                <label for="more_than_6_months">More than 6 months</label>
+            </div>
+        </div>
+        <div class="title">Budget</div>
+        <div class="budgets">
+            <div class="budget">
+                <input type="radio" id="0_500" name="budget" value="0_500">
+                <label for="0_500">Less than Rs.500/-</label>
+            </div>
+            <div class="budget">
+                <input type="radio" id="500_1000" name="budget" value="500_1000">
+                <label for="500_1000">Rs.500-Rs.1000/-</label>
+            </div>
+            <div class="budget">
+                <input type="radio" id="1000_2000" name="budget" value="1000_2000">
+                <label for="1000_2000">Rs.1000-Rs.2000/-</label>
+            </div>
+            <div class="budget">
+                <input type="radio" id="2000_3000" name="budget" value="2000_3000">
+                <label for="2000_3000">Rs.2000-Rs.3000/-</label>
+            </div>
+            <div class="budget">
+                <input type="radio" id="3000_5000" name="budget" value="3000_5000">
+                <label for="3000_5000">Rs.3000-Rs.5000/-</label>
+            </div>
+            <div class="budget">
+                <input type="radio" id="more_than_5000" name="budget" value="more_than_5000">
+                <label for="more_than_5000">More than Rs.5000/-</label>
+            </div>
+        </div>
+        <button id="submitBtn">Submit</button>
+    </div>
+    <footer>
+        <p>&copy; UniHaven</p>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Function to open Datepicker
+            $(".move-in-date-input").click(function() {
+                $("#moveInDate").datepicker("show");
+            });
+    
+            // Function to update move-in date input field
+            function updateMoveInDate(dateText) {
+                $("#moveInDate").val(dateText);
+            }
+    
+            // Initialize Datepicker
+            $("#moveInDate").datepicker({
+                dateFormat: "yy-mm-dd",
+                minDate: 0, // Restrict selection before current date
+                onSelect: function(dateText) {
+                    updateMoveInDate(dateText);
+                }
+            });
+
+            $("#submitBtn").click(function(event) {
+            event.preventDefault(); // Prevent default form submission
+            const budget = $("input[name='budget']:checked").val();
+            const moveInDate = $("#moveInDate").val();
+            const duration = $("input[name='duration']:checked").val();
+            setBudgetAndDuration(budget, moveInDate, duration);
+            });
+    
+            // Function to gather selected data and send to Flask app
+            function sendDataToFlask(budget, moveInDate, duration) {
+            const data = {
+                'budget': budget,
+                'moveInDate': moveInDate,
+                'duration': duration
+            };
+
+            fetch('/possible_accomodations', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+            })
+            .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to send data to Flask');
+            }
+            return response.json();
+            })
+            .then(responseData => {
+            // Handle the response data here if needed
+            console.log(responseData);
+            // Redirect or update UI based on response
+            })
+            .catch(error => {
+            console.error('Error sending data to Flask:', error);
+            });
+            }
+
+            function setBudgetAndDuration(budget, moveInDate, duration) {
+            document.cookie = `selectedBudget=${budget};path=/`;
+            document.cookie = `selectedMoveInDate=${moveInDate};path=/`;
+            document.cookie = `selectedDuration=${duration};path=/`;
+            sendDataToFlask(budget, moveInDate, duration);
+            window.location.href = '/Details_for_contact'; // Redirect to the next page
+            }
+
+            /*function sendDataToFlask() {
+                const moveInDate = $("#moveInDate").val();
+                const duration = $("input[name='duration']:checked").val();
+                const budget = $("input[name='budget']:checked").val(); // Change to get single value // Obtain the location value from somewhere in your JavaScript code
+                console.log(moveInDate);
+                console.log(duration);
+                console.log(budget);
+    
+                // Prepare data object to send to Flask
+                const data = {
+                    moveInDate: moveInDate,
+                    duration: duration,
+                    budget: budget,
+                    //location: location,
+                };
+    
+                // Send data to Flask method using AJAX
+                $.ajax({
+                    type: "POST",
+                    url: "/get_university_suggestions", // Change the URL to your Flask route
+                    contentType: "application/json",
+                    data: JSON.stringify(data),
+                    success: function(response) {
+                        console.log(response);
+                        // Handle success response if needed
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                        // Handle error response if needed
+                    }
+                });
+            }
+    
+            // Event listener for form submission
+            $("#submitBtn").click(function(event) {
+                event.preventDefault(); // Prevent default form submission
+                sendDataToFlask();
+                window.location.href = '/Details_for_contact'; // Send data to Flask
+            });*/
+        })
+    </script>
+    
+</body>
+</html>

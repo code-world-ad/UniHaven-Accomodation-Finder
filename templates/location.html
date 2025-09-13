@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Choose Location</title>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        background: url('/static/images/360_F_627856916_7zdwmjnpaIV6T2FgIBJJzUmHVCcIqyz0.jpg') center/cover no-repeat;
+        background-size: cover;
+        width: 100%;
+        height: 100%;
+        color: black;
+        
+    }
+
+    .header-container {
+        width: 100%;
+        background: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+        padding: 10px 0; /* Padding for better readability */
+        position: top;
+        top: 50%;
+        transform: translateY(-10%);
+    }
+
+    h1 {
+        font-size: 18px; /* Font size for location name */
+        color: #fff; /* Text color */
+    }
+
+    .location-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 50px; /* Adjust this value as needed */
+    }
+
+    .location-block {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0 10px 20px; /* Margin for spacing between blocks */
+        width: 200px; /* Width of the image block */
+        height: 600px; /* Height of the image block */
+        border-radius: 10px; /* Rounded corners for modern look */
+        cursor: pointer; /* Cursor pointer for better UX */
+        overflow: hidden; /* Hide overflow content */
+        border: 4px solid black;
+    }
+
+    .location-image {
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+    .location-label {
+        font-size: 18px; /* Font size for location name */
+        margin-top: auto; /* Push label to bottom */
+        background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+        color: #fff; /* Text color */
+        padding: 5px 0; /* Padding for better readability */
+        width: 100%;
+        text-align: center; /* Center-align text */
+        cursor: pointer; /* Cursor pointer for better UX */
+    }
+</style>
+</head>
+<body>
+    <div class="header-container">
+        <h1>Choose a Location</h1>
+    </div>
+    <div class="location-container">
+        <div class="location-block" onclick="setLocation('Chennai')">
+            <div class="location-image" style="background-image: url('/static/images/Posh-Areas-In-Chennai.jpg'); background-position: center;"></div>
+            <label class="location-label">Chennai</label>
+        </div>
+        <div class="location-block" onclick="setLocation('Madurai')">
+            <div class="location-image" style="background-image: url('/static/images/509495bf70b68eab8d4979b5a4b241a5.jpg'); background-position: center;"></div>
+            <label class="location-label">Madurai</label>
+        </div>
+        <div class="location-block" onclick="setLocation('Coimbatore')">
+            <div class="location-image" style="background-image: url('/static/images/353099.jpg'); background-position: center;"></div>
+            <label class="location-label">Coimbatore</label>
+        </div>
+        <div class="location-block" onclick="setLocation('Trichy')">
+            <div class="location-image" style="background-image: url('/static/images/Trichy-Malaikottai.jpg'); background-position: right;"></div>
+            <label class="location-label">Trichy</label>
+        </div>
+    </div>
+    <form id="locationForm" action="/possible_accommodations" method="POST" style="display: none;">
+        <input type="hidden" id="locationInput" name="location">
+    </form>
+    <footer>
+        <p>&copy; UniHaven</p>
+    </footer>
+    <script>
+        
+        function sendDataToFlask(location) {
+            const data = {
+                'location': location
+            };
+    
+            fetch('/possible_accomodations', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to send data to Flask');
+                }
+                return response.json();
+            })
+            .then(responseData => {
+                // Handle the response data here if needed
+                console.log(responseData);
+                // Redirect or update UI based on response
+            })
+            .catch(error => {
+                console.error('Error sending data to Flask:', error);
+            });
+        }
+    
+        function setLocation(location) {
+            document.cookie = `selectedLocation=${location};path=/`;
+            document.getElementById('locationForm').submit();
+            document.getElementById('locationInput').value = location;
+            console.log(document.cookie);
+            console.log(document.getElementById('locationInput').value);
+            sendDataToFlask(location);
+            window.location.href = '/uni_amen';
+        }
+    </script>
+    
+</body>
+</html>
+
+

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<title>University and Amenities</title>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        background: url('/static/images/komron-khasanov-1-interactive-lightmix.jpg') center/cover no-repeat;
+        background-size: cover;
+        width: 100%;
+        height: 100%;
+        color: black;
+        background-repeat: no-repeat;
+        background-position: center;
+        min-height: 100vh;
+        position: relative
+    }
+
+    footer {
+        position: relative;
+        bottom: 10px;
+        width: 50%;
+        color: white; /* Change the color to black */
+        padding: 10px 20px; /* Adjust padding as needed */
+        text-align: center;
+        background: rgba(0, 0, 0, 0.5);
+        border-radius: 5px;
+    }
+
+    .container {
+        width: 50%;
+        height: 200%;
+        margin: 20px auto;
+        padding: 20px;
+        text-align: center;
+        background-color: rgba(0, 0, 0, 0.5);
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        opacity: inherit;
+    }
+
+    .title {
+        text-align: left;
+        font-size: 24px;
+        margin-bottom: 20px;
+        color: #fff; /* Set title color to white */
+        font-family: Georgia, 'Times New Roman', Times, serif;
+    }
+
+    .search-box {
+        margin-bottom: 20px;
+        text-align: center;
+        
+    }
+
+    .search-input {
+        width: 70%;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        color:white;
+        background: rgba(0, 0, 0, 0.5);
+    }
+
+    .amenities {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .amenity {
+        margin: 10px;
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        background-color: #333;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        color: white;
+    }
+
+    .amenity:hover {
+        background-color: #555;
+    }
+
+    .amenity input[type="checkbox"] {
+        display: none;
+    }
+
+    .amenity input[type="checkbox"]:checked + label {
+        background-color: black;
+        color: white /* Change to desired highlight color */
+    }
+
+    .amenity label {
+        font-size: 16px;
+        margin-top: 10px;
+        cursor: pointer;
+        padding: 5px;
+        border-radius: 5px;
+    }
+
+    #submitBtn {
+    padding: 10px 20px;
+    background-color: rgba(0, 0, 0, 0.5); /* Button background color */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-align: center;
+    position: relative;
+    margin-top: 20px;
+    }
+
+    #submitBtn:hover {
+    background-color: rgba(0, 0, 0, 0.5); /* Button hover background color */
+    }
+
+    .suggestion-box {
+            position: relative;
+            padding: 10px;
+            background-color:  rgba(0, 0, 0, 0.5);
+            border: 1px solid #ccc;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1;
+            width: 70%; /* Adjust width to match the input field */
+            left: calc(47.5% - 34%); /* Position relative to the left of the input field */
+            top: calc(100% + 1px); /* Position below the input field */
+            text-align: center;
+            display: none;
+            margin-bottom: 20px;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+        .suggestion-item {
+            padding: 8px 16px;
+            cursor: pointer;
+            color: rgba(0, 0, 0, 0.5);
+        }
+        .suggestion-item:hover {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+</style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">University Name</div>
+        <div class="search-box">
+            <input type="text" class="search-input" placeholder="Enter University Name" required>
+            <div class="suggestion-box" id="suggestionBox"></div>
+        </div>
+        <div class="title">Amenities</div>
+        <div class="amenities">
+            <div class="amenity">
+                <input type="checkbox" id="wifi">
+                <label for="wifi">Wi-Fi</label>
+            </div>
+            <div class="amenity">
+                <input type="checkbox" id="parking">
+                <label for="parking">Parking</label>
+            </div>
+            <div class="amenity">
+                <input type="checkbox" id="laundry">
+                <label for="laundry">Laundry</label>
+            </div>
+            <div class="amenity">
+                <input type="checkbox" id="gym">
+                <label for="gym">Gym</label>
+            </div>
+            <div class="amenity">
+                <input type="checkbox" id="Swimming pool">
+                <label for="Swimming pool">Swimming Pool</label>
+            </div>
+            <div class="amenity">
+                <input type="checkbox" id="Power back-up">
+                <label for="Power back-up">Power back-up</label>
+            </div>
+            <div class="amenity">
+                <input type="checkbox" id="open-air theatre">
+                <label for="open-air theatre">Open-air Theatre</label>
+            </div>
+            <div class="amenity">
+                <input type="checkbox" id="Library">
+                <label for="Library">Air-conditioned Library</label>
+            </div>
+        </div>
+        <button id="submitBtn">Next Page</button>
+        
+    </div>
+    <footer>
+        <p>&copy; UniHaven</p>
+    </footer>
+
+    <script>
+         document.addEventListener('DOMContentLoaded', function () {
+            let selectedAmenities = [];
+            const searchBox = document.querySelector('.search-input');
+            const suggestionsContainer = document.getElementById('suggestionBox');
+            const amenitiesCheckboxes = document.querySelectorAll('.amenity input[type="checkbox"]');
+            const submitBtn = document.getElementById('submitBtn');
+
+            // Retrieve selected location from cookie
+            const selectedLocation = getCookie('selectedLocation');
+
+            searchBox.addEventListener('input', function () {
+                const userInput = this.value.trim().toLowerCase();
+                getSuggestionsFromBackend(userInput);
+            });
+
+            amenitiesCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function () {
+                    if (this.checked) {
+                        selectedAmenities.push(this.id);
+                    } else {
+                        selectedAmenities = selectedAmenities.filter(item => item !== this.id);
+                    }
+                });
+            });
+
+            submitBtn.addEventListener('click', function () {
+                const universityName = searchBox.value.trim();
+                sendDataToFlask(universityName, selectedAmenities);
+                window.location.href = '/move_in_dur_budget';
+            });
+
+            // Function to retrieve cookie value by name
+            function getCookie(name) {
+                const value = `; ${document.cookie}`;
+                const parts = value.split(`; ${name}=`);
+                if (parts.length === 2) return parts.pop().split(';').shift();
+            }
+            
+            window.selectUniversity = function (universityName) {
+                searchBox.value = universityName;
+                suggestionsContainer.style.display = 'none';
+            };
+
+            suggestionsContainer.addEventListener('click', function (event) {
+                const selectedSuggestion = event.target.innerText;
+                window.selectUniversity(selectedSuggestion);
+            });
+
+            function getSuggestionsFromBackend(input) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/get_university_suggestions',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ search_query: input, location: selectedLocation }), // Provide location data if needed
+                    success: function(response) {
+                        console.log('Suggestions:', response.suggestion_html);
+                        if (response.suggestion_html) {
+                            suggestionsContainer.innerHTML = response.suggestion_html;
+                            suggestionsContainer.style.display = 'block'; // Show suggestion box
+                        } else {
+                            suggestionsContainer.innerHTML = ''; // Clear suggestion box if no suggestions
+                            suggestionsContainer.style.display = 'none'; // Hide suggestion box if no suggestions
+                        }
+                        //suggestionsContainer.innerHTML = response.suggestion_html;
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error fetching suggestions:', error);
+                        suggestionsContainer.innerHTML = ''; // Clear suggestion box on error
+                        suggestionsContainer.style.display = 'none'; 
+                        //console.error('Error fetching suggestions:', error);
+                    }
+                });
+            }
+
+            function sendDataToFlask(universityName, selectedAmenities) {
+                const data = {
+                    'search_query': universityName,
+                    'amenities': selectedAmenities
+                };
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/possible_accomodations',
+                    contentType: 'application/json',
+                    data: JSON.stringify(data),
+                    success: function(response) {
+                        suggestionsContainer.innerHTML = response.suggestion_html;
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            }
+        });
+       
+        
+    </script>
+</body>
+</html>

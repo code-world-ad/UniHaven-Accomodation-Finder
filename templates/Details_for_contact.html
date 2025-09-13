@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<title>Hotel Booking</title>
+<style>
+    /* Your CSS styles */
+    body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        background: url('/static/images/komron-khasanov-1-interactive-lightmix.jpg') center/cover no-repeat;
+        background-size: cover;
+        width: 100%;
+        height: 100%;
+        color: black;
+        background-repeat: no-repeat;
+        background-position: center;
+        min-height: 100vh;
+        position: relative;
+    }
+
+    footer {
+        position: relative;
+        bottom: 0;
+        width: 100%;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        background: rgba(0, 0, 0, 0.5);
+        border-radius: 5px;
+        margin-top: 20px;
+    }
+
+    .container {
+        width: 50%;
+        margin: 20px auto;
+        padding: 20px;
+        text-align: center;
+        background-color: rgba(0, 0, 0, 0.5);
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        opacity: inherit;
+        padding-bottom: 60px; /* Extra padding to avoid overlap */
+    }
+
+    h1 {
+        text-align: center;
+        font-size: 24px;
+        margin-bottom: 20px;
+        color: #fff;
+        font-family: Georgia, 'Times New Roman', Times, serif;
+    }
+
+    form {
+        margin-top: 20px;
+        background: rgba(0, 0, 0, 0.5);
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+        color: white;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+        width: 70%;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        color: white;
+        background: rgba(0, 0, 0, 0.5);
+    }
+
+    input[type="submit"] {
+        padding: 10px 20px;
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        text-align: center;
+        position: relative;
+        margin-top: 20px;
+    }
+
+    input[type="submit"]:hover {
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .auth-option {
+        display: inline-block;
+        margin-right: 10px;
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <h1>Hotel Booking</h1>
+        <form id="authForm" action="#" method="post">
+            <div>
+                <label class="auth-option" for="loginRadio">
+                    <input type="radio" id="loginRadio" name="authOption" value="login" checked>
+                    Login
+                </label>
+                <label class="auth-option" for="signupRadio">
+                    <input type="radio" id="signupRadio" name="authOption" value="signup">
+                    Sign Up
+                </label>
+            </div>
+            <div id="signInFields">
+                <label for="loginEmail">Email</label>
+                <input type="email" id="loginEmail" name="loginEmail" required>
+                <label for="loginPassword">Password</label>
+                <input type="password" id="loginPassword" name="loginPassword" required>
+            </div>
+            <div id="signUpFields" style="display: none;">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required>
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+                <label for="phone">Phone Number</label>
+                <input type="text" id="phone" name="phone" required>
+                <label for="college">College Name</label>
+                <input type="text" id="college" name="college" required>
+                <label for="signupPassword">Password</label>
+                <input type="password" id="signupPassword" name="signupPassword" required>
+                <label for="duration">Duration of Stay</label>
+                <input type="text" id="duration" name="duration" required>
+            </div>
+            <input type="submit" id="submitBtn" value="Login">
+            <input type="submit" id="submitSignupBtn" value="Sign Up" style="display: none;">
+        </form>
+    </div>
+    <footer>
+        <p>&copy; UniHaven</p>
+    </footer>
+    
+    <script>
+        // Function to toggle between Sign Up and Login forms
+        function toggleForms() {
+            var signInFields = document.getElementById('signInFields');
+            var signUpFields = document.getElementById('signUpFields');
+            var submitBtn = document.getElementById('submitBtn');
+            var submitSignupBtn = document.getElementById('submitSignupBtn');
+
+            if (document.getElementById('signupRadio').checked) {
+                signInFields.style.display = 'none';
+                signUpFields.style.display = 'block';
+                submitBtn.style.display = 'none';
+                submitSignupBtn.style.display = 'inline-block';
+            } else {
+                signInFields.style.display = 'block';
+                signUpFields.style.display = 'none';
+                submitBtn.style.display = 'inline-block';
+                submitSignupBtn.style.display = 'none';
+            }
+        }
+
+        // Function to handle form submission
+        document.querySelectorAll('input[name="authOption"]').forEach(function(radio) {
+            radio.addEventListener('change', toggleForms);
+        });
+
+        document.getElementById('submitBtn').addEventListener('click', function(event) {
+            event.preventDefault();
+            var formData = new FormData(document.getElementById('authForm'));
+
+            // Handle login
+            var email = formData.get('loginEmail');
+            var password = formData.get('loginPassword');
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/login', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        var response = JSON.parse(xhr.responseText);
+                        if (response.login_status === 1) {
+                            alert('Login successful');
+                            window.location.href = '/accommodation';
+                        } else {
+                            alert('Login failed. Please check your credentials.');
+                        }
+                    } else {
+                        alert('An error occurred during login.');
+                    }
+                }
+            };
+
+            var encodedData = new URLSearchParams(formData).toString();
+            xhr.send(encodedData);
+        });
+
+        document.getElementById('submitSignupBtn').addEventListener('click', function(event) {
+            event.preventDefault();
+            var formData = new FormData(document.getElementById('authForm'));
+
+            // Handle sign up
+            var data = {
+                name: formData.get('name'),
+                email: formData.get('email'),
+                phone: formData.get('phone'),
+                college: formData.get('college'),
+                password: formData.get('signupPassword'),
+                duration: formData.get('duration')
+            };
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/signup', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        alert('Signup successful');
+                        window.location.href = '/accommodation';
+                    } else {
+                        alert('An error occurred during signup.');
+                    }
+                }
+            };
+            xhr.send(JSON.stringify(data));
+        });
+    </script>
+</body>
+</html>
